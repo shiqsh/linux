@@ -1,0 +1,57 @@
+#!/bin/bash
+#to convert the tex file to dvi format and then to ps file then view with gv
+rand_filename()
+{
+       MATRIX="0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz!@#$%^*_+="
+       LENGTH="9"
+       while [ "${n:=1}" -le "$LENGTH" ]
+       do
+               PASS="$PASS${MATRIX:$(($RANDOM%${#MATRIX})):1}"
+               let n+=1
+       done
+               echo "$PASS"
+}
+
+if [ $# -ne 1 ] 
+    then
+    echo "Usage: $0 texfile"
+    exit
+fi
+
+
+if [ ! -e $1 ]
+    then
+    echo "File $1 not exist"
+    exit
+fi
+
+filename=FIG_${1%.tex}.tex
+
+cat >$filename <<EOF
+\documentclass{article}
+\usepackage{graphicx}
+\usepackage{amssymb}
+\usepackage{amsmath}
+%\usepackage{textcomp}
+\usepackage{colordvi}
+\usepackage{bm}
+\begin{document}
+\pagestyle{empty}
+EOF
+echo "\input{$1}" >> $filename
+echo "\end{document}" >> $filename
+
+suffix=${filename%.tex}
+
+latex ${suffix}.tex  
+dvips -E ${suffix}.dvi -o 
+epstopdf ${suffix}.ps
+pdftops ${suffix}.pdf
+ps2eps ${suffix}.ps -f
+rm ${suffix}.tex ${suffix}.pdf ${suffix}.ps ${suffix}.dvi ${suffix}.log ${suffix}.aux
+
+if [ -f ${suffix}.eps ]
+then
+    gv ${suffix}.eps &
+fi
+
