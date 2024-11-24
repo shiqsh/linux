@@ -140,3 +140,51 @@ LaTeX 中的并排画图
 		\caption{具有非零的二阶非线性光学率的介质中激发波的二次谐波效应示意图}
 	\end{minipage}
 \end{figure}
+-----------------------------------------------------------------------------------------------
+vim设置
+" 基础设置
+set number                          " 显示行号
+set autoindent                      " 启用自动缩进
+set smartindent                     " 启用智能缩进
+set tabstop=4                       " 制表符占用空格数
+set shiftwidth=4                    " 缩进时的空格数
+set expandtab                       " 将制表符转换为相应的空格数
+set ignorecase                      " 搜索时忽略大小写
+set smartcase                       " 如果搜索包含大写字符，则区分大小写
+set wrap                            " 开启自动换行
+set linebreak                       " 根据单词换行，避免单词被拆分
+set showmatch                       " 显示匹配的括号
+set encoding=utf-8                  " 设置文件编码
+set mouse=a                         " 启用鼠标支持
+syntax on                           " 启用语法高亮
+filetype plugin indent on           " 启用文件类型检测
+
+" 搜索相关设置
+set hlsearch                        " 搜索时高亮显示匹配
+set incsearch                       " 输入搜索内容时即时显示搜索结果
+
+"高量显示光标所在的行
+set cursorline
+
+"显示当前光标的位置信息
+set ruler
+
+" 自动保存
+autocmd InsertLeave,TextChanged * if !exists('g:autosaving') || g:autosaving | silent! wa | endif
+let g:autosaving = 1                " 开启自动保存功能
+
+" 快捷键映射
+nnoremap <F2> :w<CR>                " F2 保存文件
+nnoremap <F3> :undo<CR>             " F3 撤销
+nnoremap <F4> :redo<CR>             " F4 重做
+
+" Vim 内置的拼写检查，对编写文档很有帮助
+set spell spelllang=en_us           " 设置拼写检查为英语
+nnoremap <F6> :set spell!<CR>       " F6 开关拼写检查
+
+" 针对编程语言的特定设置
+autocmd FileType python setlocal tabstop=4 shiftwidth=4 expandtab
+autocmd FileType fortran setlocal tabstop=4 shiftwidth=4 expandtab
+
+" 其他特定于科学计算的设置...
+-------------------------------------------------------------------------------------------------
